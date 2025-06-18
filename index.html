@@ -8,16 +8,16 @@
       margin: 0;
       padding: 0;
       min-height: 100vh;
-      background: #e6f7ff;
+      background: #0099cc;
       font-family: 'Montserrat', Arial, sans-serif;
     }
-    /* html { overflow: hidden; } */
     header {
       text-align: center;
-      padding: 40px 10px 20px 10px;
+      padding: 0 10px 10px 10px;
       animation: fadeInDown 1s;
       position: relative;
       z-index: 1;
+      margin-top: 0;
     }
     @keyframes fadeInDown {
       from { opacity: 0; transform: translateY(-40px);}
@@ -71,9 +71,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       position: relative;
       z-index: 1;
+      margin-top: 0;
+      padding-top: 0;
     }
     .bulle {
       position: absolute;
@@ -336,77 +337,17 @@
       color: #0099cc;
       margin-bottom: 18px;
     }
-    section #marque-action {
-      font-size: 1.4em;
-      font-weight: bold;
-      margin-bottom: 18px;
-    }
-    section button {
-      background: #00bfff;
-      color: #fff;
-      border: none;
-      padding: 10px 22px;
-      border-radius: 8px;
-      font-size: 1em;
-      cursor: pointer;
-      font-weight: bold;
-      margin-bottom: 18px;
-    }
-    section button:hover {
-      background: #0099cc;
-    }
-    section form {
-      margin-top: 10px;
-    }
-    section input {
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      width: 70px;
-    }
-    section #confirmation-achat {
-      margin-top: 16px;
-      color: #0099cc;
-      font-weight: bold;
-    }
-    /* Animation d'entrée pour les sections */
-    section, .newsletter, .carte-sujet, .question, .question-jour, .reponse, .reponse-jour {
-      animation: fadeInUp 1s;
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(40px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-
-    /* Animation sur les titres */
-    h1, h2 {
-      animation: popTitle 1.2s;
-    }
-
-    @keyframes popTitle {
-      0% { opacity: 0; transform: scale(0.8);}
-      80% { opacity: 1; transform: scale(1.08);}
-      100% { opacity: 1; transform: scale(1);}
-    }
-
-    /* Animation de survol sur les boutons et cartes */
-    button, .changer, .share-btn, section button {
-      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-    }
-    button:hover, .changer:hover, .share-btn:hover, section button:hover {
-      transform: scale(1.08) rotate(-2deg);
-      box-shadow: 0 6px 24px rgba(0,0,0,0.12);
-    }
-
-    /* Animation sur les cartes sujet au survol */
-    .carte-sujet:hover, section:hover {
-      box-shadow: 0 8px 32px rgba(0,0,0,0.16);
-      transform: scale(1.03);
-      transition: box-shadow 0.2s, transform 0.2s;
+    /* Vagues animées en fond */
+    #waves-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      display: block;
     }
   </style>
-  <!-- Icônes réseaux sociaux -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -447,10 +388,7 @@
       <div class="confirmation" id="confirmation"></div>
     </div>
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Manis_tricuspis_1.jpg" alt="Logo" class="logo">
-    
-    <div class="question" id="question" onclick="tournerEtAfficher()">
-      <!-- Question insérée par JS -->
-    </div>
+    <div class="question" id="question" onclick="tournerEtAfficher()"></div>
     <div class="reponse" id="reponse">
       <span id="reponseTexte"></span>
     </div>
@@ -463,42 +401,6 @@
     <button class="changer" onclick="changerQuestion()">Changer de question</button>
   </main>
   <footer>
-    <!-- Section de vente d'actions placée AVANT les réseaux sociaux -->
-    <section id="vente-actions" style="margin: 60px auto 30px auto; max-width: 600px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 32px; text-align: center; z-index:2; position:relative;">
-      <h2 style="color:#0099cc; margin-bottom:18px;">Achète des actions sur les entreprises stars du marché !</h2>
-      <div style="margin-bottom: 24px;">
-        <label for="marque-action" style="font-weight:bold;">Choisis une entreprise :</label><br>
-        <select id="marque-action" style="margin-top:10px; padding:8px 16px; border-radius:8px; font-size:1.1em;">
-          <option value="Apple">Apple</option>
-          <option value="Microsoft">Microsoft</option>
-          <option value="Nvidia">Nvidia</option>
-          <option value="Amazon">Amazon</option>
-          <option value="Alphabet (Google)">Alphabet (Google)</option>
-          <option value="Meta (Facebook)">Meta (Facebook)</option>
-          <option value="Tesla">Tesla</option>
-          <option value="Visa">Visa</option>
-          <option value="LVMH">LVMH</option>
-          <option value="Berkshire Hathaway">Berkshire Hathaway</option>
-          <option value="Samsung">Samsung</option>
-          <option value="Coca-Cola">Coca-Cola</option>
-          <option value="Netflix">Netflix</option>
-          <option value="Toyota">Toyota</option>
-          <option value="JPMorgan Chase">JPMorgan Chase</option>
-          <option value="Procter & Gamble">Procter & Gamble</option>
-          <option value="Shell">Shell</option>
-          <option value="Nestlé">Nestlé</option>
-          <option value="McDonald's">McDonald's</option>
-          <option value="Disney">Disney</option>
-        </select>
-      </div>
-      <form onsubmit="acheterAction(event)" style="margin-top:10px;">
-        <select id="marque-action"></select>
-        <input type="number" id="quantite" min="1" value="1">
-        <button type="submit">Acheter</button>
-      </form>
-      <div id="confirmation-achat" style="margin-top:16px;color:#0099cc;font-weight:bold;"></div>
-      <div id="portefeuille"></div>
-    </section>
     <div class="reseaux" id="reseaux">
       <a href="https://www.instagram.com/momorgty/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
       <a href="https://www.linkedin.com/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
@@ -506,32 +408,51 @@
     </div>
     <p>© 2025 AujourdHuiTuApprends.com — Fait avec ❤️ par <span style="font-weight:bold;letter-spacing:1px;">GitHub Copilot</span></p>
   </footer>
-  <section id="boutique-fiches" style="margin: 60px auto 30px auto; max-width: 600px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 32px; text-align: center; z-index:2; position:relative;">
-    <h2 style="color:#0099cc; margin-bottom:18px;">📝 Boutique de fiches à télécharger</h2>
-    <div style="margin-bottom: 24px;">
-      <div style="margin-bottom:18px;">
-        <strong>Pack IA Facile</strong><br>
-        <span>10 fiches PDF pour comprendre l’intelligence artificielle simplement.</span><br>
-        <span style="color:#00bfff;font-weight:bold;">3,99 €</span><br>
-        <div id="paypal-ia"></div>
-      </div>
-      <div style="margin-bottom:18px;">
-        <strong>Fiches Pratiques Express</strong><br>
-        <span>Apprends des astuces utiles en 1 minute par fiche.</span><br>
-        <span style="color:#00bfff;font-weight:bold;">2,49 €</span><br>
-        <div id="paypal-pratique"></div>
-      </div>
-      <div>
-        <strong>Découverte Sciences</strong><br>
-        <span>5 mini-cours illustrés pour briller en société.</span><br>
-        <span style="color:#00bfff;font-weight:bold;">1,99 €</span><br>
-        <div id="paypal-sciences"></div>
-      </div>
-    </div>
-    <div id="confirmation-achat-fiche" style="margin-top:16px;color:#0099cc;font-weight:bold;"></div>
-  </section>
-  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR"></script>
   <script>
+    // Vagues animées en fond
+    const canvas = document.getElementById('waves-canvas');
+    const ctx = canvas.getContext('2d');
+    function resizeWaves() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeWaves();
+    window.addEventListener('resize', resizeWaves);
+
+    const lines = [
+      { amplitude: 36, frequency: 0.008, speed: 0.7, color: "#00e0ff", y: 0.25 },
+      { amplitude: 48, frequency: 0.005, speed: 0.5, color: "#00bfff", y: 0.5 },
+      { amplitude: 30, frequency: 0.012, speed: 0.9, color: "#005fa3", y: 0.75 }
+    ];
+
+    function drawWaves(time) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      lines.forEach((line, i) => {
+        ctx.beginPath();
+        for (let x = 0; x <= canvas.width; x += 2) {
+          const angle = (x * line.frequency) + (time * line.speed * 0.002) + i;
+          const y = canvas.height * line.y + Math.sin(angle) * line.amplitude;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = line.color;
+        ctx.lineWidth = 3 - i * 0.7;
+        ctx.globalAlpha = 0.7 - i * 0.15;
+        ctx.shadowColor = line.color;
+        ctx.shadowBlur = 8 - i * 2;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      });
+      ctx.globalAlpha = 1;
+    }
+
+    function animateWaves(time) {
+      drawWaves(time);
+      requestAnimationFrame(animateWaves);
+    }
+    animateWaves(0);
+
+    // Questions/réponses JS
     const sujets = [
       { texte: "Apprends les bases du langage des signes en 5 min", categorie: "pratique" },
       { texte: "Comprends comment marche une IA (simplement)", categorie: "scientifique" },
@@ -599,7 +520,44 @@
       document.getElementById('confirmation').innerText = "Merci ! Tu recevras bientôt ta curiosité quotidienne 🚀";
       document.getElementById('email').value = "";
     }
-    // Tableau de questions/réponses d'actualité
+    // Questions classiques
+    const questionsClassiques = [
+      {
+        question: "Quel est le plus grand animal terrestre ?",
+        reponse: "L’éléphant d’Afrique est le plus grand animal terrestre."
+      },
+      {
+        question: "Combien de planètes composent notre système solaire ?",
+        reponse: "Il y a 8 planètes dans notre système solaire."
+      },
+      {
+        question: "Quelle est la capitale du Canada ?",
+        reponse: "La capitale du Canada est Ottawa."
+      },
+      {
+        question: "Quel est l’organe principal de la respiration chez l’homme ?",
+        reponse: "Les poumons sont les organes principaux de la respiration."
+      },
+      {
+        question: "Qui a peint la Joconde ?",
+        reponse: "La Joconde a été peinte par Léonard de Vinci."
+      }
+    ];
+    let indexClassique = 0;
+    function afficherQuestionClassique() {
+      document.getElementById('question').innerText = questionsClassiques[indexClassique].question;
+      document.getElementById('reponseTexte').innerText = questionsClassiques[indexClassique].reponse;
+      document.getElementById('reponse').style.display = 'none';
+    }
+    function tournerEtAfficher() {
+      const questionDiv = document.getElementById('question');
+      questionDiv.style.animation = "spin 1s";
+      setTimeout(() => {
+        questionDiv.style.animation = "";
+        document.getElementById('reponse').style.display = 'block';
+      }, 1000);
+    }
+    // Question d'actualité
     const actualites = [
       {
         question: "Quelle équipe a remporté l’Euro 2024 ?",
@@ -622,50 +580,9 @@
         reponse: "Les JO de Paris 2024 mettent l’accent sur l’écologie, l’innovation et l’inclusion sociale."
       }
     ];
-    // Choisir une actualité au hasard à chaque actualisation
     const actuIndex = Math.floor(Math.random() * actualites.length);
-    document.getElementById('question').innerText = actualites[actuIndex].question;
-    document.getElementById('reponseTexte').innerText = actualites[actuIndex].reponse;
-
-    function tournerEtAfficher() {
-      const questionDiv = document.getElementById('question');
-      questionDiv.style.animation = "spin 1s";
-      setTimeout(() => {
-        questionDiv.style.animation = "";
-        document.getElementById('reponse').style.display = 'block';
-      }, 1000);
-    }
-    let dejaUtilisees = [];
-    async function fetchActualite() {
-      const GNEWS_API_KEY = "TA_CLE_GNEWS_ICI";
-      // On filtre sur la date du jour (format YYYY-MM-DD)
-      const today = new Date().toISOString().slice(0, 10);
-      const url = `https://gnews.io/api/v4/top-headlines?lang=fr&country=fr&max=10&from=${today}&token=${GNEWS_API_KEY}`;
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        if (data.articles && data.articles.length > 0) {
-          // On ne prend que les actus jamais utilisées
-          const nouveaux = data.articles.filter(a => !dejaUtilisees.includes(a.title));
-          if (nouveaux.length > 0) {
-            const article = nouveaux[Math.floor(Math.random() * nouveaux.length)];
-            dejaUtilisees.push(article.title);
-            document.getElementById('questionActu').innerText = "Question d'actualité : " + article.title + " ?";
-            document.getElementById('reponseTexteActu').innerText = article.description || article.content || "Lis l'article pour en savoir plus.";
-            document.getElementById('reponseActu').style.display = 'none';
-          } else {
-            document.getElementById('questionActu').innerText = "Plus de nouvelles actualités uniques pour le moment.";
-            document.getElementById('reponseTexteActu').innerText = "";
-          }
-        } else {
-          document.getElementById('questionActu').innerText = "Aucune actualité trouvée aujourd'hui.";
-          document.getElementById('reponseTexteActu').innerText = "";
-        }
-      } catch (e) {
-        document.getElementById('questionActu').innerText = "Erreur lors de la récupération de l'actualité.";
-        document.getElementById('reponseTexteActu').innerText = "";
-      }
-    }
+    document.getElementById('questionActu').innerText = actualites[actuIndex].question;
+    document.getElementById('reponseTexteActu').innerText = actualites[actuIndex].reponse;
     function tournerEtAfficherActu() {
       const questionDiv = document.getElementById('questionActu');
       questionDiv.style.animation = "spin 1s";
@@ -674,202 +591,9 @@
         document.getElementById('reponseActu').style.display = 'block';
       }, 1000);
     }
-    setInterval(fetchActualite, 900000);
-    // Combine onload logic to avoid overwriting
-    window.onload = function() {
-      fetchActualite();
-      nouveauSujet();
-    };
-    // 5 questions/réponses par jour
-    const questionsJour = [
-      {
-        question: "Quel est le plus grand animal terrestre ?",
-        reponse: "L’éléphant d’Afrique est le plus grand animal terrestre."
-      },
-      {
-        question: "Combien de planètes composent notre système solaire ?",
-        reponse: "Il y a 8 planètes dans notre système solaire."
-      },
-      {
-        question: "Quelle est la capitale du Canada ?",
-        reponse: "La capitale du Canada est Ottawa."
-      },
-      {
-        question: "Quel est l’organe principal de la respiration chez l’homme ?",
-        reponse: "Les poumons sont les organes principaux de la respiration."
-      },
-      {
-        question: "Qui a peint la Joconde ?",
-        reponse: "La Joconde a été peinte par Léonard de Vinci."
-      }
-    ];
-    // Calcul de l'index de base pour aujourd'hui
-    const today = new Date();
-    const baseIndex = (today.getFullYear() * 1000 + today.getMonth() * 31 + today.getDate()) % questionsJour.length;
-    let currentIndex = baseIndex;
 
-    function afficherQuestion() {
-      document.getElementById('questionJour').innerText = "Question du jour : " + questionsJour[currentIndex].question;
-      document.getElementById('reponseJour').innerText = questionsJour[currentIndex].reponse;
-      document.getElementById('reponseJour').style.display = 'none';
-    }
-
-    function afficherReponseJour() {
-      document.getElementById('reponseJour').style.display = 'block';
-    }
-
-    function changerQuestion() {
-      currentIndex = (currentIndex + 1) % questionsJour.length;
-      afficherQuestion();
-    }
-
-    // Affiche la première question au chargement
-    afficherQuestion();
-
-    // --- Animation de fils vagues bleus en arrière-plan optimisée ---
-    const canvas = document.getElementById('waves-canvas');
-    const ctx = canvas.getContext('2d');
-
-    // Adapter la taille du canvas à la fenêtre (pas à toute la page)
-    function resizeWaves() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resizeWaves();
-    // Vagues bleues
-    canvas.style.width = "100vw";
-    canvas.style.height = "100vh";
-    canvas.style.zIndex = "0";
-    canvas.style.pointerEvents = "none";
-    document.body.style.background = "#0099cc";
-    // (You can implement the 'lines' array and drawing logic here if needed.)
-    canvas.style.pointerEvents = "none";
-    document.body.style.background = "#0099cc";
-
-    const marques = [
-      "Coca-Cola", "Apple", "Nike", "Samsung", "Lego", "Ferrari", "Adidas", "Sony", "Amazon", "Google",
-      "Peugeot", "Renault", "Louis Vuitton", "Zara", "IKEA", "Microsoft", "Tesla", "McDonald's", "Disney", "Netflix"
-    ];
-    let marqueActuelle = "";
-
-    function changerMarque() {
-      let nouvelle;
-      do {
-        nouvelle = marques[Math.floor(Math.random() * marques.length)];
-      } while (nouvelle === marqueActuelle);
-      marqueActuelle = nouvelle;
-      document.getElementById('marque-action').innerText = `Marque du moment : ${marqueActuelle}`;
-      document.getElementById('confirmation-achat').innerText = "";
-    }
-
-    function acheterAction(event) {
-      event.preventDefault();
-      const quantite = document.getElementById('quantite').value;
-      const entreprise = document.getElementById('marque-action').value;
-      document.getElementById('confirmation-achat').innerText =
-        `Bravo ! Tu viens d'acheter ${quantite} action(s) sur "${entreprise}" 🚀`;
-    }
-
-    // Affiche une marque au chargement
-    changerMarque();
-
-    // Liste des entreprises stars du marché
-    const entreprises = [
-      "Apple", "Microsoft", "Nvidia", "Amazon", "Alphabet (Google)", "Meta (Facebook)",
-      "Tesla", "Visa", "LVMH", "Berkshire Hathaway", "Samsung", "Coca-Cola",
-      "Netflix", "Toyota", "JPMorgan Chase", "Procter & Gamble", "Shell", "Nestlé",
-      "McDonald's", "Disney"
-    ];
-
-    // Remplir dynamiquement la liste déroulante
-    const select = document.getElementById('marque-action');
-    select.innerHTML = entreprises.map(nom =>
-      `<option value="${nom}">${nom}</option>`
-    ).join('');
-
-    // Simule un portefeuille utilisateur
-    let portefeuille = {};
-
-    function acheterAction(event) {
-      event.preventDefault();
-      const entreprise = select.value;
-      const quantite = parseInt(document.getElementById('quantite').value, 10);
-      portefeuille[entreprise] = (portefeuille[entreprise] || 0) + quantite;
-      document.getElementById('confirmation-achat').innerText =
-        `Achat simulé : ${quantite} action(s) de ${entreprise} ajoutée(s) à ton portefeuille.`;
-      afficherPortefeuille();
-    }
-
-    function afficherPortefeuille() {
-      let html = "<h3>Ton portefeuille simulé :</h3><ul>";
-      for (const [entreprise, qte] of Object.entries(portefeuille)) {
-        html += `<li>${entreprise} : ${qte} action(s)</li>`;
-      }
-      html += "</ul>";
-      document.getElementById('portefeuille').innerHTML = html;
-    }
-    function acheterFiche(nom) {
-      document.getElementById('confirmation-achat-fiche').innerText =
-        `Merci pour ton achat du pack "${nom}" ! (Paiement fictif, livraison par email bientôt 😉)`;
-    }
-  </script>
-  <script>
-    // IA Facile
-    paypal.Buttons({
-      style: { layout: 'horizontal' },
-      createOrder: function(data, actions) {
-        return actions.order.create({
-          purchase_units: [{
-            amount: { value: '3.99' },
-            payee: { email_address: "abde.zighed@gmail.com" },
-            description: "Pack IA Facile"
-          }]
-        });
-      },
-      onApprove: function(data, actions) {
-        document.getElementById('confirmation-achat-fiche').innerText =
-          "Merci pour ton achat du pack 'IA Facile' ! Tu recevras un email sous peu.";
-        return actions.order.capture();
-      }
-    }).render('#paypal-ia');
-
-    // Fiches Pratiques Express
-    paypal.Buttons({
-      style: { layout: 'horizontal' },
-      createOrder: function(data, actions) {
-        return actions.order.create({
-          purchase_units: [{
-            amount: { value: '2.49' },
-            payee: { email_address: "abde.zighed@gmail.com" },
-            description: "Fiches Pratiques Express"
-          }]
-        });
-      },
-      onApprove: function(data, actions) {
-        document.getElementById('confirmation-achat-fiche').innerText =
-          "Merci pour ton achat du pack 'Fiches Pratiques Express' ! Tu recevras un email sous peu.";
-        return actions.order.capture();
-      }
-    }).render('#paypal-pratique');
-
-    // Découverte Sciences
-    paypal.Buttons({
-      style: { layout: 'horizontal' },
-      createOrder: function(data, actions) {
-        return actions.order.create({
-          purchase_units: [{
-            amount: { value: '1.99' },
-            payee: { email_address: "abde.zighed@gmail.com" },
-            description: "Découverte Sciences"
-          }]
-        });
-      },
-      onApprove: function(data, actions) {
-        document.getElementById('confirmation-achat-fiche').innerText =
-          "Merci pour ton achat du pack 'Découverte Sciences' ! Tu recevras un email sous peu.";
-        return actions.order.capture();
-      }
-    }).render('#paypal-sciences');
+    // Affichage initial
+    afficherQuestionClassique();
   </script>
 </body>
 </html>
