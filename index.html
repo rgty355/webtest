@@ -400,13 +400,56 @@
     <div class="reponse-jour" id="reponseJour"></div>
     <button class="changer" onclick="changerQuestion()">Changer de question</button>
   </main>
+  <section id="boutique" style="margin: 30px auto; max-width: 600px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 32px; text-align: center;">
+    <h2 style="color:#0099cc; margin-bottom:18px;">🛒 Boutique AujourdHuiTuApprends</h2>
+    <div style="margin-bottom: 24px;">
+      <div style="margin-bottom:18px;">
+        <strong>Pack IA Facile</strong><br>
+        <span>10 fiches PDF pour comprendre l’IA simplement.</span><br>
+        <span style="color:#00bfff;font-weight:bold;">3,99 €</span><br>
+        <div id="paypal-ia"></div>
+      </div>
+      <div style="margin-bottom:18px;">
+        <strong>Fiches Pratiques Express</strong><br>
+        <span>Astuce utile en 1 minute par fiche.</span><br>
+        <span style="color:#00bfff;font-weight:bold;">2,49 €</span><br>
+        <div id="paypal-pratique"></div>
+      </div>
+      <div style="margin-bottom:18px;">
+        <strong>Découverte Sciences</strong><br>
+        <span>5 mini-cours illustrés pour briller en société.</span><br>
+        <span style="color:#00bfff;font-weight:bold;">1,99 €</span><br>
+        <div id="paypal-sciences"></div>
+      </div>
+      <!-- Formations très utiles -->
+      <div style="margin-bottom:18px;">
+        <strong>Formation Excel Express</strong><br>
+        <span>Maîtrise les bases d’Excel en 2h, exercices inclus.</span><br>
+        <span style="color:#00bfff;font-weight:bold;">7,99 €</span><br>
+        <div id="paypal-excel"></div>
+      </div>
+      <div style="margin-bottom:18px;">
+        <strong>Formation Prise de Parole</strong><br>
+        <span>Deviens à l’aise à l’oral avec des techniques simples et efficaces.</span><br>
+        <span style="color:#00bfff;font-weight:bold;">9,99 €</span><br>
+        <div id="paypal-oral"></div>
+      </div>
+      <div>
+        <strong>Formation Gestion du Temps</strong><br>
+        <span>Apprends à organiser tes journées pour être plus productif.</span><br>
+        <span style="color:#00bfff;font-weight:bold;">6,99 €</span><br>
+        <div id="paypal-temps"></div>
+      </div>
+    </div>
+    <div id="confirmation-achat-produit" style="margin-top:16px;color:#0099cc;font-weight:bold;"></div>
+  </section>
   <footer>
     <div class="reseaux" id="reseaux">
       <a href="https://www.instagram.com/momorgty/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
       <a href="https://www.linkedin.com/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
       <a href="https://twitter.com/" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
     </div>
-    <p>© 2025 AujourdHuiTuApprends.com — Fait avec ❤️ par <span style="font-weight:bold;letter-spacing:1px;">GitHub Copilot</span></p>
+    <p>© 2025 AujourdHuiTuApprends.com  <span style="font-weight:bold;letter-spacing:1px;">GitHub Copilot</span></p>
   </footer>
   <script>
     // Vagues animées en fond
@@ -594,6 +637,110 @@
 
     // Affichage initial
     afficherQuestionClassique();
+    function acheterProduit(nom) {
+      document.getElementById('confirmation-achat-produit').innerText =
+        `Merci pour ton achat du pack "${nom}" ! (Paiement fictif, livraison par email bientôt 😉)`;
+    }
+  </script>
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR"></script>
+  <script>
+    // Packs existants
+    paypal.Buttons({
+      style: { layout: 'horizontal' },
+      createOrder: (data, actions) => actions.order.create({
+        purchase_units: [{
+          amount: { value: '3.99' },
+          payee: { email_address: "abde.zighed@gmail.com" },
+          description: "Pack IA Facile"
+        }]
+      }),
+      onApprove: (data, actions) => {
+        document.getElementById('confirmation-achat-produit').innerText =
+          "Merci pour ton achat du pack 'IA Facile' ! Tu recevras le fichier PDF par email sous peu.";
+        return actions.order.capture();
+      }
+    }).render('#paypal-ia');
+
+    paypal.Buttons({
+      style: { layout: 'horizontal' },
+      createOrder: (data, actions) => actions.order.create({
+        purchase_units: [{
+          amount: { value: '2.49' },
+          payee: { email_address: "abde.zighed@gmail.com" },
+          description: "Fiches Pratiques Express"
+        }]
+      }),
+      onApprove: (data, actions) => {
+        document.getElementById('confirmation-achat-produit').innerText =
+          "Merci pour ton achat du pack 'Fiches Pratiques Express' ! Tu recevras le fichier PDF par email sous peu.";
+        return actions.order.capture();
+      }
+    }).render('#paypal-pratique');
+
+    paypal.Buttons({
+      style: { layout: 'horizontal' },
+      createOrder: (data, actions) => actions.order.create({
+        purchase_units: [{
+          amount: { value: '1.99' },
+          payee: { email_address: "abde.zighed@gmail.com" },
+          description: "Découverte Sciences"
+        }]
+      }),
+      onApprove: (data, actions) => {
+        document.getElementById('confirmation-achat-produit').innerText =
+          "Merci pour ton achat du pack 'Découverte Sciences' ! Tu recevras le fichier PDF par email sous peu.";
+        return actions.order.capture();
+      }
+    }).render('#paypal-sciences');
+
+    // Formations très utiles
+    paypal.Buttons({
+      style: { layout: 'horizontal' },
+      createOrder: (data, actions) => actions.order.create({
+        purchase_units: [{
+          amount: { value: '7.99' },
+          payee: { email_address: "abde.zighed@gmail.com" },
+          description: "Formation Excel Express"
+        }]
+      }),
+      onApprove: (data, actions) => {
+        document.getElementById('confirmation-achat-produit').innerText =
+          "Merci pour ton achat de la 'Formation Excel Express' ! Tu recevras le contenu par email sous peu.";
+        return actions.order.capture();
+      }
+    }).render('#paypal-excel');
+
+    paypal.Buttons({
+      style: { layout: 'horizontal' },
+      createOrder: (data, actions) => actions.order.create({
+        purchase_units: [{
+          amount: { value: '9.99' },
+          payee: { email_address: "abde.zighed@gmail.com" },
+          description: "Formation Prise de Parole"
+        }]
+      }),
+      onApprove: (data, actions) => {
+        document.getElementById('confirmation-achat-produit').innerText =
+          "Merci pour ton achat de la 'Formation Prise de Parole' ! Tu recevras le contenu par email sous peu.";
+        return actions.order.capture();
+      }
+    }).render('#paypal-oral');
+
+    paypal.Buttons({
+      style: { layout: 'horizontal' },
+      createOrder: (data, actions) => actions.order.create({
+        purchase_units: [{
+          amount: { value: '6.99' },
+          payee: { email_address: "abde.zighed@gmail.com" },
+          description: "Formation Gestion du Temps"
+        }]
+      }),
+      onApprove: (data, actions) => {
+        document.getElementById('confirmation-achat-produit').innerText =
+          "Merci pour ton achat de la 'Formation Gestion du Temps' ! Tu recevras le contenu par email sous peu.";
+        return actions.order.capture();
+      }
+    }).render('#paypal-temps');
   </script>
 </body>
 </html>
