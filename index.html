@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>5 Questions du jour en alternance</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: #e6f7ff;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    /* html { overflow: hidden; } */
+    header {
+      text-align: center;
+      padding: 40px 10px 20px 10px;
+      animation: fadeInDown 1s;
+      position: relative;
+      z-index: 1;
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-40px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    header h1 {
+      font-size: 2.5em;
+      margin: 0 0 10px 0;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #fff 30%, #00bfff 70%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientMove 3s infinite linear alternate;
+    }
+    @keyframes gradientMove {
+      0% {background-position: 0%;}
+      100% {background-position: 100%;}
+    }
+    header p {
+      font-size: 1.2em;
+      margin: 0 0 20px 0;
+      opacity: 0.85;
+      animation: fadeIn 2s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0;}
+      to { opacity: 0.85;}
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 20px;
+      animation: fadeIn 2.5s;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: background 0.2s, transform 0.2s;
+    }
+    nav a:hover {
+      background: rgba(255,255,255,0.15);
+      transform: scale(1.08);
+    }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .bulle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.15;
+      animation: bulleAnim 12s infinite linear;
+      z-index: 0;
+    }
+    .bulle1 { width: 180px; height: 180px; background: #fff; left: 5vw; top: 20vh; animation-delay: 0s;}
+    .bulle2 { width: 120px; height: 120px; background: #fff; right: 8vw; top: 40vh; animation-delay: 3s;}
+    .bulle3 { width: 90px; height: 90px; background: #fff; left: 40vw; bottom: 10vh; animation-delay: 6s;}
+    @keyframes bulleAnim {
+      0% { transform: translateY(0) scale(1);}
+      50% { transform: translateY(-40px) scale(1.1);}
+      100% { transform: translateY(0) scale(1);}
+    }
+    .carte-sujet {
+      background: #fff;
+      color: #222;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 40px 30px;
+      max-width: 420px;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.3em;
+      min-height: 100px;
+      transition: box-shadow 0.2s, transform 0.3s;
+      z-index: 1;
+      animation: popIn 1.2s;
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.8);}
+      80% { opacity: 1; transform: scale(1.05);}
+      100% { opacity: 1; transform: scale(1);}
+    }
+    .carte-sujet strong {
+      display: inline-block;
+      animation: colorPulse 2s infinite alternate;
+    }
+    @keyframes colorPulse {
+      0% { color: #00bfff;}
+      100% { color: #0099cc;}
+    }
+    .actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      z-index: 1;
+    }
+    button, .share-btn {
+      background: linear-gradient(90deg, #00bfff 60%, #0099cc 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 22px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: background 0.2s, transform 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    button:hover, .share-btn:hover {
+      background: linear-gradient(90deg, #0099cc 60%, #00bfff 100%);
+      transform: scale(1.07) rotate(-2deg);
+    }
+    .categories {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      z-index: 1;
+    }
+    .categories button {
+      background: #fff;
+      color: #00bfff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 0.95em;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+    .categories button.active,
+    .categories button:hover {
+      background: #00bfff;
+      color: #fff;
+      transform: scale(1.08);
+    }
+    .newsletter {
+      background: rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 24px 20px 18px 20px;
+      max-width: 400px;
+      margin: 0 auto 40px auto;
+      text-align: center;
+      z-index: 1;
+      animation: fadeIn 2.5s;
+    }
+    .newsletter input[type="email"] {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      margin-right: 8px;
+      font-size: 1em;
+      width: 60%;
+      max-width: 180px;
+    }
+    .newsletter button {
+      padding: 10px 18px;
+      font-size: 1em;
+      border-radius: 6px;
+      border: none;
+      background: #fff;
+      color: #00bfff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .newsletter button:hover {
+      background: #00bfff;
+      color: #fff;
+    }
+    .confirmation {
+      color: #fff;
+      margin-top: 10px;
+      font-size: 1em;
+      animation: fadeIn 1s;
+    }
+    footer {
+      text-align: center;
+      padding: 30px 10px 20px 10px;
+      font-size: 1em;
+      opacity: 0.85;
+      z-index: 2;
+      position: relative;
+    }
+    .reseaux {
+      margin: 20px 0 10px 0;
+    }
+    .reseaux a {
+      color: #fff;
+      margin: 0 10px;
+      font-size: 1.5em;
+      text-decoration: none;
+      vertical-align: middle;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .reseaux a:hover {
+      color: #222;
+      transform: scale(1.2) rotate(-8deg);
+    }
+    .logo {
+      display: block;
+      margin: 30px auto 10px auto;
+      width: 120px;
+    }
+    .question {
+      cursor: pointer;
+      background: #00bfff;
+      color: #fff;
+      padding: 16px;
+      border-radius: 8px;
+      margin: 20px 0 0 0;
+      font-weight: bold;
+      transition: background 0.2s;
+      width: fit-content;
+      display: inline-block;
+      font-size: 1.2em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      animation: fadeIn 1s;
+    }
+    .question:hover {
+      background: #0099cc;
+    }
+    .reponse {
+      display: none;
+      margin-top: 20px;
+      background: #fff;
+      color: #222;
+      padding: 18px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      width: fit-content;
+      font-size: 1.1em;
+      animation: fadeIn 1s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg) scale(1);}
+      70% { transform: rotate(360deg) scale(1.2);}
+      100% { transform: rotate(360deg) scale(1);}
+    }
+    .question-jour {
+      background: #00bfff;
+      color: #fff;
+      padding: 18px;
+      border-radius: 10px;
+      margin: 30px auto 0 auto;
+      font-size: 1.3em;
+      font-weight: bold;
+      width: fit-content;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      text-align: center;
+      cursor: pointer;
+    }
+    .reponse-jour {
+      display: none;
+      margin: 18px auto 0 auto;
+      background: #fff;
+      color: #222;
+      padding: 14px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      width: fit-content;
+      font-size: 1.1em;
+      text-align: center;
+    }
+    .changer {
+      display: block;
+      margin: 20px auto 0 auto;
+      padding: 10px 20px;
+      background: #0099cc;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    .changer:hover {
+      background: #0077a3;
+    }
+    section {
+      margin: 20px auto;
+      max-width: 600px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 32px;
+      text-align: center;
+      z-index: 1;
+      position: relative;
+    }
+    section h2 {
+      color: #0099cc;
+      margin-bottom: 18px;
+    }
+    section #marque-action {
+      font-size: 1.4em;
+      font-weight: bold;
+      margin-bottom: 18px;
+    }
+    section button {
+      background: #00bfff;
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+      font-weight: bold;
+      margin-bottom: 18px;
+    }
+    section button:hover {
+      background: #0099cc;
+    }
+    section form {
+      margin-top: 10px;
+    }
+    section input {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 70px;
+    }
+    section #confirmation-achat {
+      margin-top: 16px;
+      color: #0099cc;
+      font-weight: bold;
+    }
+    /* Animation d'entrée pour les sections */
+    section, .newsletter, .carte-sujet, .question, .question-jour, .reponse, .reponse-jour {
+      animation: fadeInUp 1s;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    /* Animation sur les titres */
+    h1, h2 {
+      animation: popTitle 1.2s;
+    }
+
+    @keyframes popTitle {
+      0% { opacity: 0; transform: scale(0.8);}
+      80% { opacity: 1; transform: scale(1.08);}
+      100% { opacity: 1; transform: scale(1);}
+    }
+
+    /* Animation de survol sur les boutons et cartes */
+    button, .changer, .share-btn, section button {
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    button:hover, .changer:hover, .share-btn:hover, section button:hover {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+    }
+
+    /* Animation sur les cartes sujet au survol */
+    .carte-sujet:hover, section:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+      transform: scale(1.03);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+  </style>
+  <!-- Icônes réseaux sociaux -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <canvas id="waves-canvas"></canvas>
+  <header>
+    <h1>🧠 AujourdHuiTuApprends.com</h1>
+    <p>Chaque jour, découvre un sujet cool ou insolite à apprendre en 1 minute !</p>
+    <nav>
+      <a href="#sujet">Sujet du jour</a>
+      <a href="#newsletter">Newsletter</a>
+      <a href="#reseaux">Réseaux</a>
+    </nav>
+  </header>
+  <main>
+    <div class="bulle bulle1"></div>
+    <div class="bulle bulle2"></div>
+    <div class="bulle bulle3"></div>
+    <div class="categories">
+      <button onclick="filtrerCategorie('tous')" class="active" id="cat-tous">Tous</button>
+      <button onclick="filtrerCategorie('scientifique')" id="cat-scientifique">Scientifique</button>
+      <button onclick="filtrerCategorie('pratique')" id="cat-pratique">Pratique</button>
+      <button onclick="filtrerCategorie('wtf')" id="cat-wtf">WTF</button>
+    </div>
+    <div class="carte-sujet" id="sujet">
+      Aujourd’hui, tu devrais apprendre :<br>
+      <strong>“Comprends comment marche une IA (simplement)”</strong>
+    </div>
+    <div class="actions">
+      <button onclick="nouveauSujet()"><i class="fa-solid fa-rotate"></i> Encore un autre ?</button>
+      <a class="share-btn" href="#" onclick="partagerSujet();return false;"><i class="fa-solid fa-share-nodes"></i> Partager</a>
+    </div>
+    <div class="newsletter" id="newsletter">
+      <h2>📰 Une curiosité par jour ?</h2>
+      <form onsubmit="inscriptionNewsletter(event)">
+        <input type="email" id="email" placeholder="Ton email" required>
+        <button type="submit">Je m'abonne</button>
+      </form>
+      <div class="confirmation" id="confirmation"></div>
+    </div>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Manis_tricuspis_1.jpg" alt="Logo" class="logo">
+    
+    <div class="question" id="question" onclick="tournerEtAfficher()">
+      <!-- Question insérée par JS -->
+    </div>
+    <div class="reponse" id="reponse">
+      <span id="reponseTexte"></span>
+    </div>
+    <div class="question" id="questionActu" onclick="tournerEtAfficherActu()"></div>
+    <div class="reponse" id="reponseActu">
+      <span id="reponseTexteActu"></span>
+    </div>
+    <div class="question-jour" id="questionJour" onclick="afficherReponseJour()"></div>
+    <div class="reponse-jour" id="reponseJour"></div>
+    <button class="changer" onclick="changerQuestion()">Changer de question</button>
+  </main>
+  <footer>
+    <!-- Section de vente d'actions placée AVANT les réseaux sociaux -->
+    <section id="vente-actions" style="margin: 60px auto 30px auto; max-width: 600px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 32px; text-align: center; z-index:2; position:relative;">
+      <h2 style="color:#0099cc; margin-bottom:18px;">Achète des actions sur les entreprises stars du marché !</h2>
+      <div style="margin-bottom: 24px;">
+        <label for="marque-action" style="font-weight:bold;">Choisis une entreprise :</label><br>
+        <select id="marque-action" style="margin-top:10px; padding:8px 16px; border-radius:8px; font-size:1.1em;">
+          <option value="Apple">Apple</option>
+          <option value="Microsoft">Microsoft</option>
+          <option value="Nvidia">Nvidia</option>
+          <option value="Amazon">Amazon</option>
+          <option value="Alphabet (Google)">Alphabet (Google)</option>
+          <option value="Meta (Facebook)">Meta (Facebook)</option>
+          <option value="Tesla">Tesla</option>
+          <option value="Visa">Visa</option>
+          <option value="LVMH">LVMH</option>
+          <option value="Berkshire Hathaway">Berkshire Hathaway</option>
+          <option value="Samsung">Samsung</option>
+          <option value="Coca-Cola">Coca-Cola</option>
+          <option value="Netflix">Netflix</option>
+          <option value="Toyota">Toyota</option>
+          <option value="JPMorgan Chase">JPMorgan Chase</option>
+          <option value="Procter & Gamble">Procter & Gamble</option>
+          <option value="Shell">Shell</option>
+          <option value="Nestlé">Nestlé</option>
+          <option value="McDonald's">McDonald's</option>
+          <option value="Disney">Disney</option>
+        </select>
+      </div>
+      <form onsubmit="acheterAction(event)" style="margin-top:10px;">
+        <select id="marque-action"></select>
+        <input type="number" id="quantite" min="1" value="1">
+        <button type="submit">Acheter</button>
+      </form>
+      <div id="confirmation-achat" style="margin-top:16px;color:#0099cc;font-weight:bold;"></div>
+      <div id="portefeuille"></div>
+    </section>
+    <div class="reseaux" id="reseaux">
+      <a href="https://www.instagram.com/momorgty/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.linkedin.com/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="https://twitter.com/" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+    </div>
+    <p>© 2025 AujourdHuiTuApprends.com — Fait avec ❤️ par <span style="font-weight:bold;letter-spacing:1px;">GitHub Copilot</span></p>
+  </footer>
+  <section id="boutique-fiches" style="margin: 60px auto 30px auto; max-width: 600px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 32px; text-align: center; z-index:2; position:relative;">
+    <h2 style="color:#0099cc; margin-bottom:18px;">📝 Boutique de fiches à télécharger</h2>
+    <div style="margin-bottom: 24px;">
+      <div style="margin-bottom:18px;">
+        <strong>Pack IA Facile</strong><br>
+        <span>10 fiches PDF pour comprendre l’intelligence artificielle simplement.</span><br>
+        <span style="color:#00bfff;font-weight:bold;">3,99 €</span><br>
+        <div id="paypal-ia"></div>
+      </div>
+      <div style="margin-bottom:18px;">
+        <strong>Fiches Pratiques Express</strong><br>
+        <span>Apprends des astuces utiles en 1 minute par fiche.</span><br>
+        <span style="color:#00bfff;font-weight:bold;">2,49 €</span><br>
+        <div id="paypal-pratique"></div>
+      </div>
+      <div>
+        <strong>Découverte Sciences</strong><br>
+        <span>5 mini-cours illustrés pour briller en société.</span><br>
+        <span style="color:#00bfff;font-weight:bold;">1,99 €</span><br>
+        <div id="paypal-sciences"></div>
+      </div>
+    </div>
+    <div id="confirmation-achat-fiche" style="margin-top:16px;color:#0099cc;font-weight:bold;"></div>
+  </section>
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR"></script>
+  <script>
+    const sujets = [
+      { texte: "Apprends les bases du langage des signes en 5 min", categorie: "pratique" },
+      { texte: "Comprends comment marche une IA (simplement)", categorie: "scientifique" },
+      { texte: "Découvre comment reconnaître un vrai bon café", categorie: "pratique" },
+      { texte: "Comment survivre si t’es perdu dans la forêt", categorie: "pratique" },
+      { texte: "Comment fonctionne une éclipse", categorie: "scientifique" },
+      { texte: "Pourquoi on a parfois une chanson dans la tête ?", categorie: "scientifique" },
+      { texte: "Comment faire un nœud de cravate parfait", categorie: "pratique" },
+      { texte: "Les bases de la méditation en 3 minutes", categorie: "pratique" },
+      { texte: "Pourquoi le ciel est bleu ?", categorie: "scientifique" },
+      { texte: "Comment mémoriser plus vite avec la méthode des loci", categorie: "pratique" },
+      { texte: "Comment fonctionne une blockchain", categorie: "scientifique" },
+      { texte: "Comment faire pousser un avocatier chez soi", categorie: "pratique" },
+      { texte: "Pourquoi on baille ?", categorie: "scientifique" },
+      { texte: "Comment lire plus vite sans perdre la compréhension", categorie: "pratique" },
+      { texte: "Comment fonctionne un moteur de recherche", categorie: "scientifique" },
+      { texte: "Comment faire un bon café à la maison", categorie: "pratique" },
+      { texte: "Pourquoi les chats ronronnent-ils ?", categorie: "scientifique" },
+      { texte: "Comment écrire un haïku", categorie: "pratique" },
+      { texte: "Comment fonctionne un panneau solaire", categorie: "scientifique" },
+      { texte: "Comment reconnaître les nuages", categorie: "scientifique" },
+      { texte: "Pourquoi les pigeons bougent la tête en marchant ?", categorie: "wtf" },
+      { texte: "Comment faire un origami en 2 minutes", categorie: "pratique" },
+      { texte: "Pourquoi les bananes sont courbées ?", categorie: "wtf" },
+      { texte: "Comment fonctionne un micro-onde ?", categorie: "scientifique" },
+      { texte: "Pourquoi on a la chair de poule ?", categorie: "scientifique" },
+      { texte: "Comment faire un slime maison", categorie: "wtf" },
+      { texte: "Pourquoi les moustiques piquent certaines personnes plus que d'autres ?", categorie: "scientifique" },
+      { texte: "Comment fonctionne un GPS ?", categorie: "scientifique" },
+      { texte: "Comment faire un effet miroir avec de l'eau", categorie: "wtf" },
+      { texte: "Pourquoi les chats aiment les cartons ?", categorie: "wtf" }
+    ];
+    let categorieActive = "tous";
+    function nouveauSujet() {
+      let sujetsFiltres = categorieActive === "tous" ? sujets : sujets.filter(s => s.categorie === categorieActive);
+      if (sujetsFiltres.length === 0) sujetsFiltres = sujets;
+      const index = Math.floor(Math.random() * sujetsFiltres.length);
+      const carte = document.getElementById('sujet');
+      carte.style.animation = "none";
+      void carte.offsetWidth; // reset animation
+      carte.style.animation = "popIn 0.7s";
+      carte.innerHTML = `Aujourd’hui, tu devrais apprendre :<br><strong>“${sujetsFiltres[index].texte}”</strong>`;
+    }
+    function partagerSujet() {
+      const texte = document.getElementById('sujet').innerText;
+      if (navigator.share) {
+        navigator.share({
+          title: "AujourdHuiTuApprends.com",
+          text: texte,
+          url: window.location.href
+        });
+      } else {
+        prompt("Copie ce texte pour le partager :", texte + " " + window.location.href);
+      }
+    }
+    function filtrerCategorie(cat) {
+      categorieActive = cat;
+      document.querySelectorAll('.categories button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('cat-' + cat).classList.add('active');
+      nouveauSujet();
+    }
+    function inscriptionNewsletter(event) {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      document.getElementById('confirmation').innerText = "Merci ! Tu recevras bientôt ta curiosité quotidienne 🚀";
+      document.getElementById('email').value = "";
+    }
+    // Tableau de questions/réponses d'actualité
+    const actualites = [
+      {
+        question: "Quelle équipe a remporté l’Euro 2024 ?",
+        reponse: "L’équipe d’Angleterre a remporté l’Euro 2024 en battant l’Espagne en finale."
+      },
+      {
+        question: "Pourquoi le prix du carburant a-t-il augmenté en juin 2025 ?",
+        reponse: "Le prix du carburant a augmenté à cause de tensions géopolitiques et d’une hausse de la demande mondiale."
+      },
+      {
+        question: "Quelles sont les dernières avancées sur l’intelligence artificielle en 2025 ?",
+        reponse: "En 2025, l’IA générative est de plus en plus utilisée dans l’éducation, la santé et la création artistique."
+      },
+      {
+        question: "Quel film a remporté la Palme d'Or au Festival de Cannes 2025 ?",
+        reponse: "Le film 'Les Horizons Lointains' a remporté la Palme d'Or au Festival de Cannes 2025."
+      },
+      {
+        question: "Quels sont les enjeux des Jeux Olympiques de Paris 2024 ?",
+        reponse: "Les JO de Paris 2024 mettent l’accent sur l’écologie, l’innovation et l’inclusion sociale."
+      }
+    ];
+    // Choisir une actualité au hasard à chaque actualisation
+    const actuIndex = Math.floor(Math.random() * actualites.length);
+    document.getElementById('question').innerText = actualites[actuIndex].question;
+    document.getElementById('reponseTexte').innerText = actualites[actuIndex].reponse;
+
+    function tournerEtAfficher() {
+      const questionDiv = document.getElementById('question');
+      questionDiv.style.animation = "spin 1s";
+      setTimeout(() => {
+        questionDiv.style.animation = "";
+        document.getElementById('reponse').style.display = 'block';
+      }, 1000);
+    }
+    let dejaUtilisees = [];
+    async function fetchActualite() {
+      const GNEWS_API_KEY = "TA_CLE_GNEWS_ICI";
+      // On filtre sur la date du jour (format YYYY-MM-DD)
+      const today = new Date().toISOString().slice(0, 10);
+      const url = `https://gnews.io/api/v4/top-headlines?lang=fr&country=fr&max=10&from=${today}&token=${GNEWS_API_KEY}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.articles && data.articles.length > 0) {
+          // On ne prend que les actus jamais utilisées
+          const nouveaux = data.articles.filter(a => !dejaUtilisees.includes(a.title));
+          if (nouveaux.length > 0) {
+            const article = nouveaux[Math.floor(Math.random() * nouveaux.length)];
+            dejaUtilisees.push(article.title);
+            document.getElementById('questionActu').innerText = "Question d'actualité : " + article.title + " ?";
+            document.getElementById('reponseTexteActu').innerText = article.description || article.content || "Lis l'article pour en savoir plus.";
+            document.getElementById('reponseActu').style.display = 'none';
+          } else {
+            document.getElementById('questionActu').innerText = "Plus de nouvelles actualités uniques pour le moment.";
+            document.getElementById('reponseTexteActu').innerText = "";
+          }
+        } else {
+          document.getElementById('questionActu').innerText = "Aucune actualité trouvée aujourd'hui.";
+          document.getElementById('reponseTexteActu').innerText = "";
+        }
+      } catch (e) {
+        document.getElementById('questionActu').innerText = "Erreur lors de la récupération de l'actualité.";
+        document.getElementById('reponseTexteActu').innerText = "";
+      }
+    }
+    function tournerEtAfficherActu() {
+      const questionDiv = document.getElementById('questionActu');
+      questionDiv.style.animation = "spin 1s";
+      setTimeout(() => {
+        questionDiv.style.animation = "";
+        document.getElementById('reponseActu').style.display = 'block';
+      }, 1000);
+    }
+    setInterval(fetchActualite, 900000);
+    // Combine onload logic to avoid overwriting
+    window.onload = function() {
+      fetchActualite();
+      nouveauSujet();
+    };
+    // 5 questions/réponses par jour
+    const questionsJour = [
+      {
+        question: "Quel est le plus grand animal terrestre ?",
+        reponse: "L’éléphant d’Afrique est le plus grand animal terrestre."
+      },
+      {
+        question: "Combien de planètes composent notre système solaire ?",
+        reponse: "Il y a 8 planètes dans notre système solaire."
+      },
+      {
+        question: "Quelle est la capitale du Canada ?",
+        reponse: "La capitale du Canada est Ottawa."
+      },
+      {
+        question: "Quel est l’organe principal de la respiration chez l’homme ?",
+        reponse: "Les poumons sont les organes principaux de la respiration."
+      },
+      {
+        question: "Qui a peint la Joconde ?",
+        reponse: "La Joconde a été peinte par Léonard de Vinci."
+      }
+    ];
+    // Calcul de l'index de base pour aujourd'hui
+    const today = new Date();
+    const baseIndex = (today.getFullYear() * 1000 + today.getMonth() * 31 + today.getDate()) % questionsJour.length;
+    let currentIndex = baseIndex;
+
+    function afficherQuestion() {
+      document.getElementById('questionJour').innerText = "Question du jour : " + questionsJour[currentIndex].question;
+      document.getElementById('reponseJour').innerText = questionsJour[currentIndex].reponse;
+      document.getElementById('reponseJour').style.display = 'none';
+    }
+
+    function afficherReponseJour() {
+      document.getElementById('reponseJour').style.display = 'block';
+    }
+
+    function changerQuestion() {
+      currentIndex = (currentIndex + 1) % questionsJour.length;
+      afficherQuestion();
+    }
+
+    // Affiche la première question au chargement
+    afficherQuestion();
+
+    // --- Animation de fils vagues bleus en arrière-plan optimisée ---
+    const canvas = document.getElementById('waves-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Adapter la taille du canvas à la fenêtre (pas à toute la page)
+    function resizeWaves() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeWaves();
+    // Vagues bleues
+    canvas.style.width = "100vw";
+    canvas.style.height = "100vh";
+    canvas.style.zIndex = "0";
+    canvas.style.pointerEvents = "none";
+    document.body.style.background = "#0099cc";
+    // (You can implement the 'lines' array and drawing logic here if needed.)
+    canvas.style.pointerEvents = "none";
+    document.body.style.background = "#0099cc";
+
+    const marques = [
+      "Coca-Cola", "Apple", "Nike", "Samsung", "Lego", "Ferrari", "Adidas", "Sony", "Amazon", "Google",
+      "Peugeot", "Renault", "Louis Vuitton", "Zara", "IKEA", "Microsoft", "Tesla", "McDonald's", "Disney", "Netflix"
+    ];
+    let marqueActuelle = "";
+
+    function changerMarque() {
+      let nouvelle;
+      do {
+        nouvelle = marques[Math.floor(Math.random() * marques.length)];
+      } while (nouvelle === marqueActuelle);
+      marqueActuelle = nouvelle;
+      document.getElementById('marque-action').innerText = `Marque du moment : ${marqueActuelle}`;
+      document.getElementById('confirmation-achat').innerText = "";
+    }
+
+    function acheterAction(event) {
+      event.preventDefault();
+      const quantite = document.getElementById('quantite').value;
+      const entreprise = document.getElementById('marque-action').value;
+      document.getElementById('confirmation-achat').innerText =
+        `Bravo ! Tu viens d'acheter ${quantite} action(s) sur "${entreprise}" 🚀`;
+    }
+
+    // Affiche une marque au chargement
+    changerMarque();
+
+    // Liste des entreprises stars du marché
+    const entreprises = [
+      "Apple", "Microsoft", "Nvidia", "Amazon", "Alphabet (Google)", "Meta (Facebook)",
+      "Tesla", "Visa", "LVMH", "Berkshire Hathaway", "Samsung", "Coca-Cola",
+      "Netflix", "Toyota", "JPMorgan Chase", "Procter & Gamble", "Shell", "Nestlé",
+      "McDonald's", "Disney"
+    ];
+
+    // Remplir dynamiquement la liste déroulante
+    const select = document.getElementById('marque-action');
+    select.innerHTML = entreprises.map(nom =>
+      `<option value="${nom}">${nom}</option>`
+    ).join('');
+
+    // Simule un portefeuille utilisateur
+    let portefeuille = {};
+
+    function acheterAction(event) {
+      event.preventDefault();
+      const entreprise = select.value;
+      const quantite = parseInt(document.getElementById('quantite').value, 10);
+      portefeuille[entreprise] = (portefeuille[entreprise] || 0) + quantite;
+      document.getElementById('confirmation-achat').innerText =
+        `Achat simulé : ${quantite} action(s) de ${entreprise} ajoutée(s) à ton portefeuille.`;
+      afficherPortefeuille();
+    }
+
+    function afficherPortefeuille() {
+      let html = "<h3>Ton portefeuille simulé :</h3><ul>";
+      for (const [entreprise, qte] of Object.entries(portefeuille)) {
+        html += `<li>${entreprise} : ${qte} action(s)</li>`;
+      }
+      html += "</ul>";
+      document.getElementById('portefeuille').innerHTML = html;
+    }
+    function acheterFiche(nom) {
+      document.getElementById('confirmation-achat-fiche').innerText =
+        `Merci pour ton achat du pack "${nom}" ! (Paiement fictif, livraison par email bientôt 😉)`;
+    }
+  </script>
+  <script>
+    // IA Facile
+    paypal.Buttons({
+      style: { layout: 'horizontal' },
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: { value: '3.99' },
+            payee: { email_address: "abde.zighed@gmail.com" },
+            description: "Pack IA Facile"
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        document.getElementById('confirmation-achat-fiche').innerText =
+          "Merci pour ton achat du pack 'IA Facile' ! Tu recevras un email sous peu.";
+        return actions.order.capture();
+      }
+    }).render('#paypal-ia');
+
+    // Fiches Pratiques Express
+    paypal.Buttons({
+      style: { layout: 'horizontal' },
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: { value: '2.49' },
+            payee: { email_address: "abde.zighed@gmail.com" },
+            description: "Fiches Pratiques Express"
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        document.getElementById('confirmation-achat-fiche').innerText =
+          "Merci pour ton achat du pack 'Fiches Pratiques Express' ! Tu recevras un email sous peu.";
+        return actions.order.capture();
+      }
+    }).render('#paypal-pratique');
+
+    // Découverte Sciences
+    paypal.Buttons({
+      style: { layout: 'horizontal' },
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: { value: '1.99' },
+            payee: { email_address: "abde.zighed@gmail.com" },
+            description: "Découverte Sciences"
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        document.getElementById('confirmation-achat-fiche').innerText =
+          "Merci pour ton achat du pack 'Découverte Sciences' ! Tu recevras un email sous peu.";
+        return actions.order.capture();
+      }
+    }).render('#paypal-sciences');
+  </script>
+</body>
+</html>
